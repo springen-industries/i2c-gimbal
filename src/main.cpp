@@ -11,3 +11,11 @@
 // should listen over i2c for interrupts or configuration changes
 // should flash leds red when i2c collisions occurr
 // should provide led feedback of manipulations of inputs
+
+void setup(){
+
+}
+
+void loop(){
+  
+}
