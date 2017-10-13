@@ -12,10 +12,14 @@
 // should flash leds red when i2c collisions occurr
 // should provide led feedback of manipulations of inputs
 
+
+#include <Arduino.h>
+
+
 void setup(){
 
 }
 
 void loop(){
-  
+
 }
