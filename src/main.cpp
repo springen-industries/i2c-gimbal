@@ -32,11 +32,11 @@ int b = 255;
 int delayMills = 66;
 // function that executes whenever data is requested by master
 // this function is registered as an event, see 0et0p(0
-void requestEvent() {strip.show();
-  Wire.write("hello "); // respond with message of 6 bytes
+void requestEvent() {
+  strip.clear();
   for( int i = 0; i < numPixels; i++ )
       strip.setPixelColor(i, 0, 255, 10);
-
+  strip.show();
 }
   // as expected by master
 
@@ -44,12 +44,10 @@ void requestEvent() {strip.show();
 void setup() {
   strip.begin();  // initialize the strip
   strip.show();   // make sure it is visible
-  strip.clear();  // Initialize all pixels to 'off'
-  Wire.begin(0x0a);                // join i2c bus with address #8
+  strip.clear();  // Initialize all pixelo 'off'
+  Wire.begin(0x8f);                // join i2c bus with address #8
   Wire.onRequest(requestEvent); // register event
 }
-
-
 
 void updateLEDs(){
   //colors for internal LED
