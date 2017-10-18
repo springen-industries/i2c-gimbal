@@ -36,19 +36,10 @@ void requestEvent() {
   strip.clear();
   for( int i = 0; i < numPixels; i++ )
       strip.setPixelColor(i, 0, 255, 10);
-  strip.show();
+  strip.clear();
+  Wire.write("hello ");
 }
   // as expected by master
-
-
-void setup() {
-  strip.begin();  // initialize the strip
-  strip.show();   // make sure it is visible
-  strip.clear();  // Initialize all pixelo 'off'
-  Wire.begin(0x8f);                // join i2c bus with address #8
-  Wire.onRequest(requestEvent); // register event
-}
-
 void updateLEDs(){
   //colors for internal LED
   strip.setPixelColor(0, r, g, b);
@@ -82,8 +73,16 @@ for( int i = numPixels; i > 0; i-- ) {
   delay(delayMills);
 }
 
+
+void setup() {
+  strip.begin();  // initialize the strip
+  strip.show();   // make sure it is visible
+  strip.clear();  // Initialize all pixelo 'off'
+
+  Wire.begin(0x9A);                // join i2c bus with address #8
+  Wire.onRequest(requestEvent); // register event
+}
+
 void loop() {
-
   updateLEDs();
-
 }
