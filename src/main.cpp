@@ -17,6 +17,17 @@
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
 
+
+int PIN_0 = 18;
+int pin0_val;
+int PIN_1 = 19;
+int pin1_val;
+int PIN_2 = 20;
+int pin2_val;
+int PIN_3 = 21;
+int pin3_val;
+
+
 // the data pin for the NeoPixels
 int neoPixelPin = 6;
 // How many NeoPixels we will be using, charge accordingly
@@ -34,10 +45,12 @@ int delayMills = 66;
 // this function is registered as an event, see 0et0p(0
 void requestEvent() {
   strip.clear();
-  for( int i = 0; i < numPixels; i++ )
-      strip.setPixelColor(i, 0, 255, 10);
-  strip.clear();
-  Wire.write("hello ");
+  // strip.setPixelColor(0, 0, 255, 10);
+  // strip.show();
+  Wire.write(pin0_val);
+  Wire.write(pin1_val);
+  Wire.write(pin2_val);
+  Wire.write(pin3_val); // + " " + pin1_val + " " + pin2_val + " " + pin3_val);
 }
   // as expected by master
 void updateLEDs(){
@@ -74,15 +87,23 @@ for( int i = numPixels; i > 0; i-- ) {
 }
 
 
+void readPins(){
+  pin0_val = analogRead(PIN_0);
+  pin1_val = analogRead(PIN_1);
+  pin2_val = analogRead(PIN_2);
+  pin3_val = analogRead(PIN_3);
+}
+
+
 void setup() {
   strip.begin();  // initialize the strip
   strip.show();   // make sure it is visible
   strip.clear();  // Initialize all pixelo 'off'
-
-  Wire.begin(0x9A);                // join i2c bus with address #8
+  Wire.begin(26);                // join i2c bus with address #8
   Wire.onRequest(requestEvent); // register event
 }
 
 void loop() {
   updateLEDs();
+  readPins();
 }
