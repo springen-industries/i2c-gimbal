@@ -12,45 +12,29 @@
 // should flash leds red when i2c collisions occurr
 // should provide led feedback of manipulations of inputs
 
-#include <Filters.h>
+#include <JoystickLib.h>
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
 #include <Wire.h>
 
-int PIN_0 = 18;
-int pin0_val;;
-int PIN_1 = 19;
-int pin1_val;
-int PIN_2 = 20;
-int pin2_val;
-int PIN_3 = 21;
-int pin3_val;
-float filterAlpha = 0.2;
 
-float filteredSignal0;
-float filteredSignal1;
-float filteredSignal2;
-float filteredSignal3;
+int PIN_0 = 18;
+int PIN_1 = 19;
+int PIN_2 = 20;
+int PIN_3 = 21;
+
+Joystick stick1(PIN_0,PIN_1);
+Joystick stick2(PIN_2,PIN_3);
 
 uint8_t buffer[4];
 
-float sensorValue;
 // the data pin for the NeoPixels
 int neoPixelPin = 6;
 // How many NeoPixels we will be using, charge accordingly
 int numPixels = 5;
-
 // Instatiate the NeoPixel from the ibrary
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(numPixels, neoPixelPin, NEO_GRB + NEO_KHZ800);
-
-// filters out changes faster that 5 Hz.
-float filterFrequency = 5.0;
-
 // create a one pole (RC) lowpass filter
-FilterOnePole lowpassFilter( LOWPASS, filterFrequency );
-
-
-
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(numPixels, neoPixelPin, NEO_GRB + NEO_KHZ800);
 // Global RGB values, change to suit your needs
 int r = 0;
 int g = 0;
@@ -58,6 +42,8 @@ int b = 255;
 int delayMills = 10;
 // function that executes whenever data is requested by master
 // this function is registered as an event, see 0et0p(0
+
+
 void updateLEDs(){
   // as expected by master
   //colors for internal LED
@@ -82,8 +68,8 @@ void updateLEDs(){
       strip.show();
       delay(delayMills);
   }
-for( int i = numPixels; i > 0; i-- ) {
 
+for( int i = numPixels; i > 0; i-- ) {
       strip.setPixelColor(i, 0, 0, 0);
       // show all pixels
       strip.show();
@@ -94,27 +80,27 @@ for( int i = numPixels; i > 0; i-- ) {
 
 
 void readValues(){
-
-
-
-  sensorValue = analogRead(PIN_0);
-  filteredSignal0 = (filterAlpha* sensorValue) + ((1-filterAlpha)*filteredSignal0);
-  buffer[0] = filteredSignal0;
+  stick1.loop();
+  Serial.println("--------");
+  buffer[0] = stick1.getX();
+  Serial.print("Stick1 X:");
   Serial.println(buffer[0]);
-  sensorValue = analogRead(PIN_1);
-  filteredSignal1 = (filterAlpha* sensorValue) + ((1-filterAlpha)*filteredSignal1);
-  buffer[1] = filteredSignal1;
-  //buffer[1] = analogRead(PIN_1);// & 0xff;
-  Serial.println(buffer[1]);
-  sensorValue = analogRead(PIN_2);
-  filteredSignal2 = (filterAlpha* sensorValue) + ((1-filterAlpha)*filteredSignal2);
-  buffer[2] = filteredSignal2;
-  Serial.println(buffer[2]);
-  sensorValue = analogRead(PIN_3);
-  filteredSignal3 = (filterAlpha* sensorValue) + ((1-filterAlpha)*filteredSignal3);
-  buffer[3] = filteredSignal3;
- Serial.println(buffer[3]);
 
+  stick1.loop();
+  buffer[1] = stick1.getY();
+  Serial.print("Stick1 Y:");
+  Serial.println(buffer[1]);
+
+  stick2.loop();
+  buffer[2] = stick2.getX();
+  Serial.print("stick2 X:");
+  Serial.println(buffer[2]);
+
+  stick2.loop();
+  buffer[3] = stick2.getY();
+  Serial.print("stick2 Y:");
+  Serial.println(buffer[3]);
+  Serial.println("------------");
 }
 
 void transmitReadings(){
