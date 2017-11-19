@@ -1,9 +1,14 @@
-I2C gimbal
+## I2C-Gimbal
 
-Reads signals from 4 analog inputs, converts them to bits and sends them over I2C when asked
+1. Reads signals from 4 analog inputs,
+2. converts them to bits
+3. listens for requests and sends readings over I2C
 
+Implemented on an Arduino pro micro (Leonardo)
 
-
+Uses a pair of 2-axis resistor based gimbals as inputs
+Uses pio vended JoystickLib to handle signal filtering (smoothing, bad value rejection)
+Uses 5 NeoPixel LEDs for visual feedback of stick positions
 
 
 
