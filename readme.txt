@@ -1,3 +1,13 @@
+I2C gimbal
+
+Reads signals from 4 analog inputs, converts them to bits and sends them over I2C when asked
+
+
+
+
+
+
+
 
 This directory is intended for the project specific (private) libraries.
 PlatformIO will compile them to static libraries and link to executable file.
