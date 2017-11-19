@@ -1,4 +1,4 @@
-## I2C-Gimbal
+# I2C-Gimbal
 
 1. Reads signals from 4 analog inputs,
 2. converts them to bits
@@ -6,9 +6,10 @@
 
 Implemented on an Arduino pro micro (Leonardo)
 
-Uses a pair of 2-axis resistor based gimbals as inputs
-Uses pio vended JoystickLib to handle signal filtering (smoothing, bad value rejection)
-Uses 5 NeoPixel LEDs for visual feedback of stick positions
+- Uses a pair of 2-axis resistor based gimbals as inputs
+- Uses pio vended JoystickLib to handle signal filtering (smoothing, bad value rejection)
+- Uses 5 NeoPixel LEDs for visual feedback of stick positions
+- Delivered to device via platformIO and embedded linux
 
 
 
