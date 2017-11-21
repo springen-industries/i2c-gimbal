@@ -26,8 +26,8 @@ int PIN_3 = 21;
 Joystick stick1(PIN_0,PIN_1);
 Joystick stick2(PIN_2,PIN_3);
 
-byte axisMinimum[4];
-byte axisMaximum[4];
+byte highAxisMinimum[4];
+byte lowAxisMaximum[4];
 
 byte i2cBuffer[4];
 byte readBuffer[4];
@@ -39,36 +39,35 @@ int numPixels = 5;
 // create a one pole (RC) lowpass filter
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(numPixels, neoPixelPin, NEO_GRB + NEO_KHZ800);
 // Global RGB values, change to suit your needs
-int r = 0;
-int g = 0;
-int b = 10;
+int r = 50;
+int g = 20;
+int b = 50;
 
 void normalizeValues(){
 for(int i=0;i<channelCount;i++){
-    if (readBuffer[i] > axisMinimum[i] ){
-      i2cBuffer[i] = map(readBuffer[i],axisMinimum[i],255,0,128);
+    if (readBuffer[i] > highAxisMinimum[i] ){
+      i2cBuffer[i] = map(readBuffer[i],highAxisMinimum[i],255,0,128);
     } else {
-      i2cBuffer[i] = map(readBuffer[i],0,axisMaximum[i],128,256);
+      i2cBuffer[i] = map(readBuffer[i],0,lowAxisMaximum[i],128,256);
     }
-
   }
-  Serial.print("s1x: ");
-  Serial.print((int)i2cBuffer[0]);
-  Serial.print("s1y: ");
-  Serial.print((int)i2cBuffer[1]);
-  Serial.print("s2x: ");
-  Serial.print((int)i2cBuffer[2]);
-  Serial.print("s3x: ");
-  Serial.print((int)i2cBuffer[3]);
-  Serial.println("-----");
+  // Serial.print("s1x: ");
+  // Serial.print((int)i2cBuffer[0]);
+  // Serial.print("s1y: ");
+  // Serial.print((int)i2cBuffer[1]);
+  // Serial.print("s2x: ");
+  // Serial.print((int)i2cBuffer[2]);
+  // Serial.print("s3x: ");
+  // Serial.print((int)i2cBuffer[3]);
+  // Serial.println("-----");
 }
 
 void updateLEDs(){
   strip.setPixelColor(0, r, g, b);
   // zero led is internal, start at 1
   for(int i=1;i<5;i++) {
-    int ledg = readBuffer[i-1];
-    strip.setPixelColor(i,r,ledg,b);
+    int ledg = i2cBuffer[i-1];
+    strip.setPixelColor(i,r,ledg+20,b);
   }
   strip.show();
 }
@@ -80,7 +79,7 @@ void readValues(){
   readBuffer[1] = stick1.getY();
   readBuffer[2] = stick2.getX();
   readBuffer[3] = stick2.getY();
-  //--------------------------------------
+  // --------------------------------------
   // Serial.print("s1x: ");
   // Serial.print((int)readBuffer[0]);
   // Serial.print("s1y: ");
@@ -90,7 +89,10 @@ void readValues(){
   // Serial.print("s3x: ");
   // Serial.print((int)readBuffer[3]);
   // Serial.println("-----");
-  //-------------------------------------------
+  // Serial.println("-----");
+  // Serial.println("-----");
+  // Serial.println("-----");
+  // -------------------------------------------
 }
 
 void transmitReadings(){
@@ -104,8 +106,8 @@ void requestEvent() {
 
 void zeroArrays(){
   for(int i=0; i<4; i++){
-    axisMinimum[i] = 200;
-    axisMaximum[i] = 100;
+    highAxisMinimum[i] = 200;
+    lowAxisMaximum[i] = 70;
   }
 }
 
