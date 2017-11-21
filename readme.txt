@@ -9,9 +9,12 @@ Implemented on an Arduino pro micro (Leonardo)
 - Uses a pair of 2-axis resistor based gimbals as inputs
 - Uses pio vended JoystickLib to handle signal filtering (smoothing, bad value rejection)
 - Uses 5 NeoPixel LEDs for visual feedback of stick positions
-- Delivered to device via platformIO and embedded linux
+- Delivered to device via platformIO and embedded Linux
 
-
+-------------
+TODO:
+Normalize bits from 200-255|0-100 to 0-255
+Add mode to request and format stick response as
 
 
 
