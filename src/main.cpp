@@ -43,19 +43,24 @@ int r = 0;
 int g = 0;
 int b = 10;
 
-void normalizeSignals(){
+void normalizeValues(){
 for(int i=0;i<channelCount;i++){
     if (readBuffer[i] > axisMinimum[i] ){
       i2cBuffer[i] = map(readBuffer[i],axisMinimum[i],255,0,128);
     } else {
       i2cBuffer[i] = map(readBuffer[i],0,axisMaximum[i],128,256);
     }
-    // if (bytes[i] > axisMaximum[i]){
-    //     axisMaximum[i] = bytes[i];
-    // } else if (bytes[i] < axisMinimum[i]){
-    //   axisMinimum[i] = bytes[i];
-    // }
+
   }
+  Serial.print("s1x: ");
+  Serial.print((int)i2cBuffer[0]);
+  Serial.print("s1y: ");
+  Serial.print((int)i2cBuffer[1]);
+  Serial.print("s2x: ");
+  Serial.print((int)i2cBuffer[2]);
+  Serial.print("s3x: ");
+  Serial.print((int)i2cBuffer[3]);
+  Serial.println("-----");
 }
 
 void updateLEDs(){
@@ -75,6 +80,17 @@ void readValues(){
   readBuffer[1] = stick1.getY();
   readBuffer[2] = stick2.getX();
   readBuffer[3] = stick2.getY();
+  //--------------------------------------
+  // Serial.print("s1x: ");
+  // Serial.print((int)readBuffer[0]);
+  // Serial.print("s1y: ");
+  // Serial.print((int)readBuffer[1]);
+  // Serial.print("s2x: ");
+  // Serial.print((int)readBuffer[2]);
+  // Serial.print("s3x: ");
+  // Serial.print((int)readBuffer[3]);
+  // Serial.println("-----");
+  //-------------------------------------------
 }
 
 void transmitReadings(){
@@ -88,7 +104,7 @@ void requestEvent() {
 
 void zeroArrays(){
   for(int i=0; i<4; i++){
-    axisMinimum[i] = 255;
+    axisMinimum[i] = 200;
     axisMaximum[i] = 100;
   }
 }
@@ -100,10 +116,11 @@ void setup() {
   strip.clear();  // Initialize all pixelo 'off'
   Wire.begin(26);                // join i2c bus with address #8
   Wire.onRequest(requestEvent); // register event
+  Serial.begin(9600);
 }
 
 void loop() {
   updateLEDs();
+  normalizeValues();
   readValues();
-  Serial.println("x: " + readBuffer[0]);
 }
