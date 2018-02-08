@@ -45,6 +45,7 @@ int delayMills = 10;
 
 
 void updateLEDs(){
+  strip.clear();
   strip.setPixelColor(0, r, g, b);
   // zero led is internal, start at 1
   for(int i=1;i<5;i++) {
@@ -60,7 +61,7 @@ void fillBuffer() {
   buffer[1] = stick1.getY();
   buffer[2] = stick2.getX();
   buffer[3] = stick2.getY();
-  Serial.println((int)buffer[0] + " " + (int)buffer[1] + " " + (int)buffer[2] + " " + (int)buffer[3]);
+  Serial.println((String)buffer[0] + " " + (String)buffer[1] + " " + (String)buffer[2] + " " + (String)buffer[3]);
 }
 
 void onUpHandler() {
@@ -109,7 +110,6 @@ void transmitReadings(){
 }
 
 void requestEvent() {
-  strip.clear();
   transmitReadings();
 }
 
@@ -118,8 +118,10 @@ void setup() {
   strip.begin();  // initialize the strip
   strip.show();   // make sure it is visible
   strip.clear();  // Initialize all pixelo 'off'
+
   Wire.begin(26);                // join i2c bus with address #8
   Wire.onRequest(requestEvent); // register event
+
   Serial.begin(9600);
 	while (!Serial) {
 		delay(10);
