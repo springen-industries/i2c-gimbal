@@ -18,10 +18,10 @@
 #include <Wire.h>
 
 
-int PIN_0 = 18;
-int PIN_1 = 19;
-int PIN_2 = 20;
-int PIN_3 = 21;
+int PIN_0 = 8;
+int PIN_1 = 9;
+int PIN_2 = 21;
+int PIN_3 = 20;
 
 Joystick stick1(PIN_0,PIN_1);
 Joystick stick2(PIN_2,PIN_3);
