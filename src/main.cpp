@@ -136,14 +136,23 @@ void setup() {
 	fillBuffer();
 
 	// Wire up event handlers.
-	stick.onUp(onUpHandler);
-	stick.onRightUp(onRightUpHandler);
-	stick.onRight(onRightHandler);
-	stick.onRightDown(onRightDownHandler);
-	stick.onDown(onDownHandler);
-	stick.onLeftDown(onLeftDownHandler);
-	stick.onLeft(onLeftHandler);
-	stick.onLeftUp(onLeftUpHandler);
+	stick1.onUp(onUpHandler);
+	stick1.onRightUp(onRightUpHandler);
+	stick1.onRight(onRightHandler);
+	stick1.onRightDown(onRightDownHandler);
+	stick1.onDown(onDownHandler);
+	stick1.onLeftDown(onLeftDownHandler);
+	stick1.onLeft(onLeftHandler);
+	stick1.onLeftUp(onLeftUpHandler);
+
+  stick2.onUp(onUpHandler);
+	stick2.onRightUp(onRightUpHandler);
+	stick2.onRight(onRightHandler);
+	stick2.onRightDown(onRightDownHandler);
+	stick2.onDown(onDownHandler);
+	stick2.onLeftDown(onLeftDownHandler);
+	stick2.onLeft(onLeftHandler);
+	stick2.onLeftUp(onLeftUpHandler);
 }
 
 void loop() {
