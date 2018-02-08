@@ -54,14 +54,55 @@ void updateLEDs(){
   strip.show();
 }
 
-void readValues(){
-  stick1.loop();
-  stick2.loop();
+
+void fillBuffer() {
   buffer[0] = stick1.getX();
   buffer[1] = stick1.getY();
   buffer[2] = stick2.getX();
   buffer[3] = stick2.getY();
+  Serial.println((int)buffer[0] + " " + (int)buffer[1] + " " + (int)buffer[2] + " " + (int)buffer[3]);
 }
+
+void onUpHandler() {
+	Serial.println(F("Direction: Up"));
+	fillBuffer();
+}
+
+void onRightUpHandler() {
+	Serial.println(F("Direction: Right-Up"));
+	fillBuffer();
+}
+
+void onRightHandler() {
+	Serial.println(F("Direction: Right"));
+	fillBuffer();
+}
+
+void onRightDownHandler() {
+	Serial.println(F("Direction: Right-Down"));
+	fillBuffer();
+}
+
+void onDownHandler() {
+	Serial.println(F("Direction: Down"));
+	fillBuffer();
+}
+
+void onLeftDownHandler() {
+	Serial.println(F("Direction: Left-Down"));
+	fillBuffer();
+}
+
+void onLeftHandler() {
+	Serial.println(F("Direction: Left"));
+	fillBuffer();
+}
+
+void onLeftUpHandler() {
+	Serial.println(F("Direction: Left-Up"));
+	fillBuffer();
+}
+
 
 void transmitReadings(){
     Wire.write(buffer, 4);
@@ -79,9 +120,32 @@ void setup() {
   strip.clear();  // Initialize all pixelo 'off'
   Wire.begin(26);                // join i2c bus with address #8
   Wire.onRequest(requestEvent); // register event
+  Serial.begin(9600);
+	while (!Serial) {
+		delay(10);
+	}
+
+	// Calibrate and print out position.
+	Serial.println();
+	Serial.print(F("Calibrating.... "));
+	stick.calibrate();
+	Serial.println(F("Done."));
+	Serial.println(F("Calibrated zero position: "));
+	fillBuffer();
+
+	// Wire up event handlers.
+	stick.onUp(onUpHandler);
+	stick.onRightUp(onRightUpHandler);
+	stick.onRight(onRightHandler);
+	stick.onRightDown(onRightDownHandler);
+	stick.onDown(onDownHandler);
+	stick.onLeftDown(onLeftDownHandler);
+	stick.onLeft(onLeftHandler);
+	stick.onLeftUp(onLeftUpHandler);
 }
 
 void loop() {
-  updateLEDs();
-  readValues();
+	// Read joystick and process events every 300ms.
+	stick.loop();
+    delay(300);
 }
