@@ -129,11 +129,14 @@ void setup() {
 
 	// Calibrate and print out position.
 	Serial.println();
-	Serial.print(F("Calibrating.... "));
-	stick.calibrate();
+	Serial.print(F("Calibrating stick 1.... "));
+	stick1.calibrate();
 	Serial.println(F("Done."));
-	Serial.println(F("Calibrated zero position: "));
-	fillBuffer();
+  Serial.print(F("Calibrating stick 2.... "));
+	stick2.calibrate();
+	Serial.println(F("Done."));
+
+  fillBuffer();
 
 	// Wire up event handlers.
 	stick1.onUp(onUpHandler);
@@ -157,6 +160,8 @@ void setup() {
 
 void loop() {
 	// Read joystick and process events every 300ms.
-	stick.loop();
-    delay(300);
+	 stick1.loop();
+    delay(150);
+    stick2.loop();
+      delay(150);
 }
