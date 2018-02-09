@@ -26,13 +26,13 @@ int PIN_3 = 20;
 Joystick stick1(PIN_0,PIN_1);
 Joystick stick2(PIN_2,PIN_3);
 
-uint8_t i2cBuffer[4];
-uint8_t readBuffer[4];
+byte i2cBuffer[4];
+byte readBuffer[4];
 
-unit8_t highAxisMaximum[4];
-unit8_t highAxisMinimum[4];
-unit8_t lowVals[4];
-unit8_t highVals[4];
+byte highAxisMaximum[4];
+byte highAxisMinimum[4];
+byte lowVals[4];
+byte highVals[4];
 
 int channelCount = 4;
 // the data pin for the NeoPixels
