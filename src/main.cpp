@@ -66,7 +66,7 @@ void zeroArrays(){
   for (int i=0; i<4; i++){
     lowVals[i] = 0;
     highVals[i] = 0;
-    highAxisMaximum[i] = 128;
+    highAxisMinimum[i] = 128;
     lowAxisMaximum[i] = 0;
   }
 }
