@@ -29,6 +29,11 @@ Joystick stick2(PIN_2,PIN_3);
 uint8_t i2cBuffer[4];
 uint8_t readBuffer[4];
 
+unit8_t highAxisMaximum[4];
+unit8_t highAxisMinimum[4];
+unit8_t lowVals[4];
+unit8_t highVals[4];
+
 int channelCount = 4;
 // the data pin for the NeoPixels
 int neoPixelPin = 6;
@@ -51,10 +56,19 @@ void updateLEDs(){
   strip.setPixelColor(0, r, g, b);
   // zero led is internal, start at 1
   for(int i=1;i<5;i++) {
-    int ledg = i2i2cBuffer[i-1];
+    int ledg = i2cBuffer[i-1];
     strip.setPixelColor(i,r,ledg,b);
   }
   strip.show();
+}
+
+void zeroArrays(){
+  for (int i=0; i<4; i++){
+    lowVals[i] = 0;
+    highVals[i] = 0;
+    highAxisMaximum[i] = 128;
+    lowAxisMaximum[i] = 0;
+  }
 }
 
 
@@ -83,7 +97,7 @@ void fillBuffer() {
   readBuffer[2] = stick2.getX();
   readBuffer[3] = stick2.getY();
   normalizeValues();
-  //Serial.println((String)i2i2cBuffer[0] + " " + (String)i2i2cBuffer[1] + " " + (String)i2i2cBuffer[2] + " " + (String)i2i2cBuffer[3]);
+  //Serial.println((String)i2cBuffer[0] + " " + (String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3]);
 }
 
 void onUpHandler() {
@@ -128,7 +142,7 @@ void onLeftUpHandler() {
 
 
 void transmitReadings(){
-    Wire.write(i2i2cBuffer, 4);
+    Wire.write(i2cBuffer, 4);
 }
 
 void requestEvent() {
@@ -143,7 +157,7 @@ void setup() {
 
   Wire.begin(26);                // join i2c bus with address #8
   Wire.onRequest(requestEvent); // register event
-
+  zeroArrays();
   fillBuffer();
 
 	// Wire up event handlers.
