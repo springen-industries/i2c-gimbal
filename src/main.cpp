@@ -30,7 +30,7 @@ byte i2cBuffer[4];
 byte readBuffer[4];
 
 byte highAxisMaximum[4];
-byte highAxisMinimum[4];
+byte lowAxisMaximum[4];
 byte lowVals[4];
 byte highVals[4];
 
@@ -73,21 +73,21 @@ void zeroArrays(){
 
 
 void normalizeValues(){
-for(int i=0;i<channelCount;i++){
-    byte val;
-    if (readBuffer[i] > highAxisMinimum[i] ){
-      val = map(readBuffer[i],128,255,0,128);
-    } else {
-      val = map(readBuffer[i],0,128,128,255);
-    }
-   if (val < lowVals[i] ) {
-    lowVals[i] = val;
-   }
-   if ( val > highVals[i] ) {
-    highVals[i] = val;
-   }
-  i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
-
+  for(int i=0;i<channelCount;i++){
+      byte val;
+      if (readBuffer[i] > highAxisMinimum[i] ){
+        val = map(readBuffer[i],128,255,0,128);
+      } else {
+        val = map(readBuffer[i],0,128,128,255);
+      }
+     if (val < lowVals[i] ) {
+      lowVals[i] = val;
+     }
+     if ( val > highVals[i] ) {
+      highVals[i] = val;
+     }
+    i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
+  }
 }
 
 
