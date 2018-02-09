@@ -29,7 +29,7 @@ Joystick stick2(PIN_2,PIN_3);
 byte i2cBuffer[4];
 byte readBuffer[4];
 
-byte highAxisMaximum[4];
+byte highAxisMinimum[4];
 byte lowAxisMaximum[4];
 byte lowVals[4];
 byte highVals[4];
