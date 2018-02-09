@@ -56,12 +56,32 @@ void updateLEDs(){
 }
 
 
+void normalizeValues(){
+for(int i=0;i<channelCount;i++){
+    byte val;
+    if (readBuffer[i] > highAxisMinimum[i] ){
+      val = map(readBuffer[i],128,255,0,128);
+    } else {
+      val = map(readBuffer[i],0,128,128,255);
+    }
+   if (val < lowVals[i] ) {
+    lowVals[i] = val;
+   }
+   if ( val > highVals[i] ) {
+    highVals[i] = val;
+   }
+  i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
+
+}
+
+
 void fillBuffer() {
-  buffer[0] = stick1.getX();
-  buffer[1] = stick1.getY();
-  buffer[2] = stick2.getX();
-  buffer[3] = stick2.getY();
-  Serial.println((String)buffer[0] + " " + (String)buffer[1] + " " + (String)buffer[2] + " " + (String)buffer[3]);
+  readBuffer[0] = stick1.getX();
+  readBuffer[1] = stick1.getY();
+  readBuffer[2] = stick2.getX();
+  readBuffer[3] = stick2.getY();
+  normalizeValues();
+  //Serial.println((String)buffer[0] + " " + (String)buffer[1] + " " + (String)buffer[2] + " " + (String)buffer[3]);
 }
 
 void onUpHandler() {
@@ -122,19 +142,19 @@ void setup() {
   Wire.begin(26);                // join i2c bus with address #8
   Wire.onRequest(requestEvent); // register event
 
-  Serial.begin(9600);
-	while (!Serial) {
-		delay(10);
-	}
+  //Serial.begin(9600);
+	//while (!Serial) {
+	//	delay(10);
+	//}
 
 	// Calibrate and print out position.
-	Serial.println();
-	Serial.print(F("Calibrating stick 1.... "));
-	stick1.calibrate();
-	Serial.println(F("Done."));
-  Serial.print(F("Calibrating stick 2.... "));
-	stick2.calibrate();
-	Serial.println(F("Done."));
+	///Serial.println();
+	//Serial.print(F("Calibrating stick 1.... "));
+	//stick1.calibrate();
+	//Serial.println(F("Done."));
+  //Serial.print(F("Calibrating stick 2.... "));
+	//stick2.calibrate();
+	//Serial.println(F("Done."));
 
   fillBuffer();
 
