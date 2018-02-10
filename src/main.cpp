@@ -80,7 +80,7 @@ void zeroArrays(){
     highAxisMinimum[i] = 128;
     lowAxisMaximum[i] = 0;
     readbuffer[i] = 0;
-    i2i2cBuffer[i] = 0;
+    i2cBuffer[i] = 0;
   }
 }
 
@@ -102,7 +102,7 @@ void bufferReadings(){
      }
        i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
   }
-  println((String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2i2cBuffer[3] + " " + (String)i2i2cBuffer[4]);
+  println((String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3] + " " + (String)i2cBuffer[4]);
 }
 
 function readValues(){
