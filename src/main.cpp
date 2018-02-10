@@ -28,6 +28,7 @@ int STICK_2_LEFT;
 int STICK_2_RIGHT;
 
 
+
 int PIN_0 = 8;
 int PIN_1 = 9;
 int PIN_2 = 21;
@@ -85,6 +86,7 @@ void zeroArrays(){
 
 
 void bufferReadings(){
+
   for(int i=0;i<channelCount;i++){
       byte val;
       if (readBuffer[i] > highAxisMinimum[i] ){
@@ -103,36 +105,13 @@ void bufferReadings(){
   println((String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2i2cBuffer[3] + " " + (String)i2i2cBuffer[4]);
 }
 
-pushMoveMessage(int move_type, byte newValue){
-  moveStack.push(newValue);
-  type_stack.push(moveType);
-  println((String)move_type + " " + (String)newValue);
+function readValues(){
+  readBuffer[0] = stick1.getX();
+  readBuffer[1] = stick2.getY();
+  readBuffer[2] = sitck2.getX();
+  readBuffer[3] = stick2.getY();
 }
-//
-// void onUpHandler1() {
-//   pushMoveMessage(STICK_1_UP, stick1.getY());
-//   }
-// void onRightHandler1() {
-// 	pushMoveMessage(STICK_1_RIGHT, stick1.getX());
-// }
-// void onDownHandler1() {
-//   pushMoveMessage(STICK_1_DOWN, stick1.getY());
-// }
-// void onLeftHandler1() {
-// 	pushMoveMessage(STICK_1_LEFT,stick1.getX());
-// }
-// void onUpHandler2() {
-//   pushMoveMessage(STICK_2_UP, stick2.getY());
-//   }
-// void onRightHandler2() {
-// 	pushMoveMessage(STICK_2_RIGHT, stick2.getX());
-// }
-// void onDownHandler2() {
-//   pushMoveMessage(STICK_2_DOWN, stick2.getY());
-// }
-// void onLeftHandler2() {
-// 	pushMoveMessage(STICK_2_LEFT,stick2.getX());
-}
+
 
 void transmitReadings(){
   Wire.write(i2cBuffer, 4);
@@ -142,23 +121,10 @@ void i2cRequest() {
 }
 
 void setup() {
-  //Serial.begin(9600);
-  //strip.begin();  // initialize the strip
-  //strip.show();   // make sure it is visible
-  //strip.clear();  // Initialize all pixelo 'off'
+
   Wire.begin(26);                // join i2c bus with address #8
   Wire.onRequest(i2cRequest); // register event
   zeroArrays();
-	// // Wire up event handlers.
-	// stick1.onUp(onUpHandler1);
-	// stick1.onRight(onRightHandler1);
-	// stick1.onDown(onDownHandler1);
-	// stick1.onLeft(onLeftHandler1);
-	// // Wire up event handlers.
-	// stick2.onUp(onUpHandler2);
-	// stick2.onRight(onRightHandler2);
-	// stick2.onDown(onDownHandler2);
-	// stick2.onLeft(onLeftHandler2);
 }
 
 void loop() {
@@ -167,6 +133,7 @@ void loop() {
   delay(25);
   stick2.loop();
   delay(25);
+  readValues();
   bufferReadings();
   delay(25);
 }
