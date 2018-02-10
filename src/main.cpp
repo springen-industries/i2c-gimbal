@@ -85,8 +85,11 @@ void zeroArrays(){
 }
 
 
-void bufferReadings(){
-readValues();
+void readAndBuffer(){
+  readBuffer[0] = stick1.getX();
+  readBuffer[1] = stick1.getY();
+  readBuffer[2] = stick2.getX();
+  readBuffer[3] = stick2.getY();
   for(int i=0;i<channelCount;i++){
       byte val;
       if (readBuffer[i] > highAxisMinimum[i] ){
@@ -105,12 +108,7 @@ readValues();
   Serial.println((String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3] + " " + (String)i2cBuffer[4]);
 }
 
-void readValues(){
-  readBuffer[0] = stick1.getX();
-  readBuffer[1] = stick1.getY();
-  readBuffer[2] = stick2.getX();
-  readBuffer[3] = stick2.getY();
-}
+
 
 
 void transmitReadings(){
@@ -134,6 +132,6 @@ void loop() {
   stick2.loop();
   //delay(25);
   //readValues();
-  bufferReadings();
+  readAndBuffer();
   delay(25);
 }
