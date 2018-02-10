@@ -105,7 +105,7 @@ void bufferReadings(){
   println((String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3] + " " + (String)i2cBuffer[4]);
 }
 
-function readValues(){
+void readValues(){
   readBuffer[0] = stick1.getX();
   readBuffer[1] = stick2.getY();
   readBuffer[2] = sitck2.getX();
