@@ -102,13 +102,13 @@ void bufferReadings(){
      }
        i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
   }
-  println((String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3] + " " + (String)i2cBuffer[4]);
+  Serial.println((String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3] + " " + (String)i2cBuffer[4]);
 }
 
 void readValues(){
   readBuffer[0] = stick1.getX();
   readBuffer[1] = stick2.getY();
-  readBuffer[2] = sitck2.getX();
+  readBuffer[2] = stick2.getX();
   readBuffer[3] = stick2.getY();
 }
 
@@ -121,7 +121,7 @@ void i2cRequest() {
 }
 
 void setup() {
-
+  Serial.begin(9600);
   Wire.begin(26);                // join i2c bus with address #8
   Wire.onRequest(i2cRequest); // register event
   zeroArrays();
