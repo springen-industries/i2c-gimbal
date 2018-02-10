@@ -79,7 +79,7 @@ void zeroArrays(){
     highVals[i] = 0;
     highAxisMinimum[i] = 128;
     lowAxisMaximum[i] = 0;
-    readbuffer[i] = 0;
+    readBuffer[i] = 0;
     i2cBuffer[i] = 0;
   }
 }
