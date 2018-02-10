@@ -78,11 +78,13 @@ void zeroArrays(){
     highVals[i] = 0;
     highAxisMinimum[i] = 128;
     lowAxisMaximum[i] = 0;
+    readbuffer[i] = 0;
+    i2i2cBuffer[i] = 0;
   }
 }
 
 
-void normalizeValues(){
+void bufferReadings(){
   for(int i=0;i<channelCount;i++){
       byte val;
       if (readBuffer[i] > highAxisMinimum[i] ){
@@ -96,108 +98,68 @@ void normalizeValues(){
      if ( val > highVals[i] ) {
       highVals[i] = val;
      }
+       i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
   }
 }
 
-void updateI2c(){
-  for (int i=-)
-  i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
+void onUpHandler1() {
+  pushMoveMessage(STICK_1_UP, stick1.getY());
+  }
+void onRightHandler1() {
+	pushMoveMessage(STICK_1_RIGHT, stick1.getX());
 }
-
-
-void fillBuffer() {
-  readBuffer[0] = stick1.getX();
-  readBuffer[1] = stick1.getY();
-  readBuffer[2] = stick2.getX();
-  readBuffer[3] = stick2.getY();
-  normalizeValues();
-
+void onDownHandler1() {
+  pushMoveMessage(STICK_1_DOWN, stick1.getY());
 }
-
-void onUpHandler() {
-
-  fillBuffer();
+void onLeftHandler1() {
+	pushMoveMessage(STICK_1_LEFT,stick1.getX());
 }
-
-void onRightUpHandler() {
-	Serial.println(F("Direction: Right-Up"));
-	fillBuffer();
+void onUpHandler2() {
+  pushMoveMessage(STICK_2_UP, stick2.getY());
+  }
+void onRightHandler2() {
+	pushMoveMessage(STICK_2_RIGHT, stick2.getX());
 }
-
-void onRightHandler() {
-	Serial.println(F("Direction: Right"));
-	fillBuffer();
+void onDownHandler2() {
+  pushMoveMessage(STICK_2_DOWN, stick2.getY());
 }
-
-void onRightDownHandler() {
-	Serial.println(F("Direction: Right-Down"));
-	fillBuffer();
+void onLeftHandler2() {
+	pushMoveMessage(STICK_2_LEFT,stick2.getX());
 }
-
-void onDownHandler() {
-	Serial.println(F("Direction: Down"));
-	fillBuffer();
-}
-
-void onLeftDownHandler() {
-	Serial.println(F("Direction: Left-Down"));
-	fillBuffer();
-}
-
-void onLeftHandler() {
-	Serial.println(F("Direction: Left"));
-	fillBuffer();
-}
-
-void onLeftUpHandler() {
-	Serial.println(F("Direction: Left-Up"));
-	fillBuffer();
-}
-
 
 void transmitReadings(){
-    Wire.write(i2cBuffer, 4);
+  Wire.write(i2cBuffer, 4);
 }
-
-void requestEvent() {
+void i2cRequest() {
   transmitReadings();
 }
 
 void setup() {
   //Serial.begin(9600);
-  strip.begin();  // initialize the strip
-  strip.show();   // make sure it is visible
-  strip.clear();  // Initialize all pixelo 'off'
-
+  //strip.begin();  // initialize the strip
+  //strip.show();   // make sure it is visible
+  //strip.clear();  // Initialize all pixelo 'off'
   Wire.begin(26);                // join i2c bus with address #8
-  Wire.onRequest(requestEvent); // register event
+  Wire.onRequest(i2cRequest); // register event
   zeroArrays();
-  fillBuffer();
-
 	// Wire up event handlers.
-	stick1.onUp(onUpHandler);
-	stick1.onRightUp(onRightUpHandler);
-	stick1.onRight(onRightHandler);
-	stick1.onRightDown(onRightDownHandler);
-	stick1.onDown(onDownHandler);
-	stick1.onLeftDown(onLeftDownHandler);
-	stick1.onLeft(onLeftHandler);
-	stick1.onLeftUp(onLeftUpHandler);
-
-  stick2.onUp(onUpHandler);
-	stick2.onRightUp(onRightUpHandler);
-	stick2.onRight(onRightHandler);
-	stick2.onRightDown(onRightDownHandler);
-	stick2.onDown(onDownHandler);
-	stick2.onLeftDown(onLeftDownHandler);
-	stick2.onLeft(onLeftHandler);
-	stick2.onLeftUp(onLeftUpHandler);
+	stick1.onUp(onUpHandler1);
+	stick1.onRight(onRightHandler1);
+	stick1.onDown(onDownHandler1);
+	stick1.onLeft(onLeftHandler1);
+	// Wire up event handlers.
+	stick2.onUp(onUpHandler2);
+	stick2.onRight(onRightHandler2);
+	stick2.onDown(onDownHandler2);
+	stick2.onLeft(onLeftHandler2);
 }
 
 void loop() {
 	// Read joystick and process events every 300ms.
-	 stick1.loop();
-    delay(150);
-    stick2.loop();
-      delay(150);
+	stick1.loop();
+  delay(25);
+  stick2.loop();
+  delay(25);
+  bufferReadings();
+  delay(25);
 }
