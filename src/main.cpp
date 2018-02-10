@@ -17,6 +17,16 @@
 #include <Adafruit_NeoPixel.h>
 #include <Wire.h>
 
+int STICK_1_UP;
+int STICK_1_DOWN;
+int STICK_1_LEFT;
+int STICK_1_RIGHT;
+
+int STICK_2_UP;
+int STICK_2_DOWN;
+int STICK_2_LEFT;
+int STICK_2_RIGHT;
+
 
 int PIN_0 = 8;
 int PIN_1 = 9;
@@ -86,8 +96,12 @@ void normalizeValues(){
      if ( val > highVals[i] ) {
       highVals[i] = val;
      }
-    i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
   }
+}
+
+void updateI2c(){
+  for (int i=-)
+  i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
 }
 
 
@@ -97,12 +111,12 @@ void fillBuffer() {
   readBuffer[2] = stick2.getX();
   readBuffer[3] = stick2.getY();
   normalizeValues();
-  //Serial.println((String)i2cBuffer[0] + " " + (String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3]);
+
 }
 
 void onUpHandler() {
-	Serial.println(F("Direction: Up"));
-	fillBuffer();
+
+  fillBuffer();
 }
 
 void onRightUpHandler() {
