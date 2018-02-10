@@ -86,7 +86,7 @@ void zeroArrays(){
 
 
 void bufferReadings(){
-
+readValues();
   for(int i=0;i<channelCount;i++){
       byte val;
       if (readBuffer[i] > highAxisMinimum[i] ){
@@ -130,10 +130,10 @@ void setup() {
 void loop() {
 	// Read joystick and process events every 300ms.
 	stick1.loop();
-  delay(25);
+  //delay(25);
   stick2.loop();
-  delay(25);
-  readValues();
+  //delay(25);
+  //readValues();
   bufferReadings();
   delay(25);
 }
