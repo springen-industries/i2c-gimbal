@@ -107,7 +107,7 @@ void bufferReadings(){
 
 void readValues(){
   readBuffer[0] = stick1.getX();
-  readBuffer[1] = stick2.getY();
+  readBuffer[1] = stick1.getY();
   readBuffer[2] = stick2.getX();
   readBuffer[3] = stick2.getY();
 }
