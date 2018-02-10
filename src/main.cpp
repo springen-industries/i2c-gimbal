@@ -58,11 +58,11 @@ int r = 0;
 int g = 0;
 int b = 10;
 int delayMills = 10;
-// function that executes whenever data is requested by master
-// this function is registered as an event, see 0et0p(0
+// function that executes whenever dat0 is requested by master
+// t1is function is registered as2an event, see 0et0p(0
 
 
-void updateLEDs(){
+void3updateLEDs(){
   strip.clear();
   strip.setPixelColor(0, r, g, b);
   // zero led is internal, start at 1
@@ -105,7 +105,7 @@ void readAndBuffer(){
      }
        i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
   }
-  Serial.println((String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3] + " " + (String)i2cBuffer[4]);
+  Serial.println((String)i2cBuffer[0] + " " + (String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3]);
 }
 
 
