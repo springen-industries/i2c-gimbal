@@ -17,36 +17,44 @@
 #include <Adafruit_NeoPixel.h>
 #include <Wire.h>
 
-int STICK_1_UP;
-int STICK_1_DOWN;
-int STICK_1_LEFT;
-int STICK_1_RIGHT;
+//constants used for stick movements
+const int STICK_1_UP = 0;
+const int STICK_1_DOWN = 1;
+const int STICK_1_LEFT = 2;
+const int STICK_1_RIGHT = 3;
 
-int STICK_2_UP;
-int STICK_2_DOWN;
-int STICK_2_LEFT;
-int STICK_2_RIGHT;
+const int STICK_2_UP = 4;
+const int STICK_2_DOWN = 5;
+const int STICK_2_LEFT = 6;
+const int STICK_2_RIGHT = 7;
 
 
+/// pin assignments
+const int PIN_0 = 8;
+const int PIN_1 = 9;
+const int PIN_2 = 21;
+const int PIN_3 = 20;
 
-int PIN_0 = 8;
-int PIN_1 = 9;
-int PIN_2 = 21;
-int PIN_3 = 20;
+// pin association to joystick object input
+const int channelCount = 4;
+
+// the data pin for the NeoPixels
+byte i2cBuffer[channelCount];
+byte readBuffer[channelCount];
+
+byte highAxisMinimum[channelCount];
+byte lowAxisMaximum[channelCount];
+byte lowVals[channelCount];
+byte highVals[channelCount];
+
+
 
 Joystick stick1(PIN_0,PIN_1);
 Joystick stick2(PIN_2,PIN_3);
 
-byte i2cBuffer[4];
-byte readBuffer[4];
 
-byte highAxisMinimum[4];
-byte lowAxisMaximum[4];
-byte lowVals[4];
-byte highVals[4];
 
-int channelCount = 4;
-// the data pin for the NeoPixels
+
 int neoPixelPin = 6;
 // 0 inside -1-4 top middle,
 int numPixels = 5;
@@ -62,7 +70,7 @@ int delayMills = 10;
 // t1is function is registered as2an event, see 0et0p(0
 
 
-void3updateLEDs(){
+void updateLEDs(){
   strip.clear();
   strip.setPixelColor(0, r, g, b);
   // zero led is internal, start at 1
@@ -74,7 +82,7 @@ void3updateLEDs(){
 }
 
 void zeroArrays(){
-  for (int i=0; i<4; i++){
+  for (int i=0; i<channelCount; i++){
     lowVals[i] = 0;
     highVals[i] = 0;
     highAxisMinimum[i] = 128;
@@ -112,7 +120,7 @@ void readAndBuffer(){
 
 
 void transmitReadings(){
-  Wire.write(i2cBuffer, 4);
+  Wire.write(i2cBuffer, channelCount);
 }
 void i2cRequest() {
   transmitReadings();
