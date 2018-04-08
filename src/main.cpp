@@ -29,13 +29,13 @@ int STICK_2_RIGHT;
 
 
 
-int PIN_0 = 8;
-int PIN_1 = 9;
-int PIN_2 = 21;
-int PIN_3 = 20;
+int PIN_0 = 22;
+int PIN_1 = 23;
+int PIN_2 = 24;
+int PIN_3 = 25;
 
-Joystick stick1(PIN_0,PIN_1);
-Joystick stick2(PIN_2,PIN_3);
+Joystick stick1(PIN_2,PIN_3);
+Joystick stick2(PIN_1,PIN_0);
 
 byte i2cBuffer[4];
 byte readBuffer[4];
@@ -62,7 +62,7 @@ int delayMills = 10;
 // t1is function is registered as2an event, see 0et0p(0
 
 
-void3updateLEDs(){
+void updateLEDs(){
   strip.clear();
   strip.setPixelColor(0, r, g, b);
   // zero led is internal, start at 1
@@ -76,7 +76,7 @@ void3updateLEDs(){
 void zeroArrays(){
   for (int i=0; i<4; i++){
     lowVals[i] = 0;
-    highVals[i] = 0;
+    highVals[i] = 255;
     highAxisMinimum[i] = 128;
     lowAxisMaximum[i] = 0;
     readBuffer[i] = 0;
@@ -97,15 +97,16 @@ void readAndBuffer(){
       } else {
         val = map(readBuffer[i],0,128,128,255);
       }
-     if (val < lowVals[i] ) {
+     if (val < lowVals[i] && val != 0 ) {
       lowVals[i] = val;
      }
-     if ( val > highVals[i] ) {
+     if ( val > highVals[i] & val != 2000 ) {
       highVals[i] = val;
      }
        i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
   }
-  Serial.println((String)i2cBuffer[0] + " " + (String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3]);
+
+  Serial.println((String)lowVals[0] + " " + (String)i2cBuffer[0] + " " + (String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3]);
 }
 
 
@@ -120,7 +121,7 @@ void i2cRequest() {
 
 void setup() {
   Serial.begin(9600);
-  Wire.begin(26);                // join i2c bus with address #8
+  Wire.begin(10);                // join i2c bus with address #8
   Wire.onRequest(i2cRequest); // register event
   zeroArrays();
 }
