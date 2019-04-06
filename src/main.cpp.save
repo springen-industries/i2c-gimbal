@@ -49,10 +49,10 @@ byte highVals[channelCount];
 
 
 
-int PIN_0 = 26;
-int PIN_1 = 25;
-int PIN_2 = 24;
-int PIN_3 = 23;
+int PIN_0 = 18;
+int PIN_1 = 19;
+int PIN_2 = 20;
+int PIN_3 = 21;
 
 Joystick stick1(PIN_1,PIN_0);
 Joystick stick2(PIN_2,PIN_3);
@@ -111,9 +111,9 @@ void readAndBuffer(){
   for(int i=0;i<channelCount;i++){
       byte val;
       if (readBuffer[i] > highAxisMinimum[i] ){
-        val = 255 - map(readBuffer[i],128,255,0,128);
+        val = map(readBuffer[i],128,255,0,128);
       } else {
-        val = 255 - map(readBuffer[i],0,128,128,255);
+        val = map(readBuffer[i],0,128,128,255);
       }
      if (val < lowVals[i] && val != 0 ) {
       lowVals[i] = val;
@@ -121,7 +121,7 @@ void readAndBuffer(){
      if ( val > highVals[i] & val != 2000 ) {
       highVals[i] = val;
      }
-     i2cBuffer[i] = map(val,lowVals[i],highVals[i],0,255);
+     i2cBuffer[i] = map(val,lowVals[i],highVals[i],255,);
   }
 
   Serial.println((String)lowVals[0] + " " + (String)i2cBuffer[0] + " " + (String)i2cBuffer[1] + " " + (String)i2cBuffer[2] + " " + (String)i2cBuffer[3]);
