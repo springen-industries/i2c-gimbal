@@ -47,9 +47,13 @@ int PIN_1 = 25;
 int PIN_2 = 24;
 int PIN_3 = 23;
 
+int PIN_4 = 22;
+int PIN_5 = 21;
+
 Joystick stick1(PIN_1,PIN_0);
 Joystick stick2(PIN_2,PIN_3);
 
+Joystick stick3(PIN_4,PIN_5);
 
 
 
