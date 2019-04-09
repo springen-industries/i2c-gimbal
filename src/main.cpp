@@ -49,10 +49,10 @@ byte highVals[channelCount];
 
 
 
-int PIN_0 = 26;
+int PIN_0 = 24;
 int PIN_1 = 25;
-int PIN_2 = 24;
-int PIN_3 = 23;
+int PIN_2 = 23;
+int PIN_3 = 21;
 
 Joystick stick1(PIN_1,PIN_0);
 Joystick stick2(PIN_2,PIN_3);
